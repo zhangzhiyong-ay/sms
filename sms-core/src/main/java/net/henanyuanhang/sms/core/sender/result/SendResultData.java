@@ -1,9 +1,9 @@
-package net.henanyuanhang.core.sender.result;
+package net.henanyuanhang.sms.core.sender.result;
 
 /**
  * 短信发送状态
  */
-public interface SmsSendStatus {
+public interface SendResultData {
 
     /**
      * 结果唯一表示

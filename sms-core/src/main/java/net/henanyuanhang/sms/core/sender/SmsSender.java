@@ -1,6 +1,7 @@
-package net.henanyuanhang.core.sender;
+package net.henanyuanhang.sms.core.sender;
 
-import net.henanyuanhang.core.sender.result.SmsSendResult;
+import net.henanyuanhang.sms.core.exception.SmsSendException;
+import net.henanyuanhang.sms.core.sender.result.SendResult;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import java.util.Map;
  */
 public interface SmsSender {
 
-
     /**
      * 单个发送短信
      *
@@ -19,7 +19,7 @@ public interface SmsSender {
      * @param templateParams 短信模板变量对应的参数。若模板无变量，则设置为null
      * @return
      */
-    SmsSendResult send(String phoneNumber, String templateId, Map<String, String> templateParams);
+    SendResult send(String phoneNumber, String templateId, Map<String, String> templateParams) throws SmsSendException;
 
     /**
      * 批量发送-同一短信内容向不同手机号发送
@@ -29,7 +29,7 @@ public interface SmsSender {
      * @param templateParams 短信模板变量对应的参数。若模板无变量，则设置为null
      * @return
      */
-    SmsSendResult send(List<String> phoneNumbers, String templateId, Map<String, String> templateParams);
+    SendResult send(List<String> phoneNumbers, String templateId, Map<String, String> templateParams) throws SmsSendException;
 
     /**
      * 批量发送-向不同手机号发送不同短信内容
@@ -41,5 +41,5 @@ public interface SmsSender {
      *                       否则需要与 phoneNumbers 字段个数相同。如其中一个模板无参数时，可对该下标的值设置为null。
      * @return
      */
-    SmsSendResult send(List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams);
+    SendResult send(List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams) throws SmsSendException;
 }

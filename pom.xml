@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.henanyuanhang</groupId>
-    <artifactId>yuanhang-sms</artifactId>
+    <artifactId>sms</artifactId>
     <packaging>pom</packaging>
     <version>${version}</version>
     <modules>
-        <module>yuanhang-sms-core</module>
+        <module>sms-core</module>
     </modules>
 
     <properties>
