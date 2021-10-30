@@ -1,9 +1,8 @@
-package net.henanyuanhang.sms.core;
+package net.henanyuanhang.sms.core.sender;
 
 import net.henanyuanhang.sms.core.exception.SmsSendException;
-import net.henanyuanhang.sms.core.sender.SendCallback;
-import net.henanyuanhang.sms.core.sender.SmsSender;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
+import net.henanyuanhang.sms.core.util.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +45,15 @@ public class SmsSendTemplate {
         return asyncSenderExecutor;
     }
 
+    private SendResult send(SmsSendFunction sendFunction) {
+        Assert.notNull(sendFunction, "sendFunction is null");
+        try {
+            return sendFunction.send(smsSender);
+        } catch (SmsSendException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * 同步--单个发送短信
      *
@@ -66,11 +74,7 @@ public class SmsSendTemplate {
      * @return
      */
     public SendResult send(String phoneNumber, String templateId, Map<String, String> templateParams) {
-        try {
-            return smsSender.send(phoneNumber, templateId, templateParams);
-        } catch (SmsSendException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        return send(smsSender -> smsSender.send(phoneNumber, templateId, templateParams));
     }
 
     /**
@@ -94,11 +98,7 @@ public class SmsSendTemplate {
      * @return
      */
     public SendResult send(List<String> phoneNumbers, String templateId, Map<String, String> templateParams) {
-        try {
-            return smsSender.send(phoneNumbers, templateId, templateParams);
-        } catch (SmsSendException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        return send(smsSender -> smsSender.send(phoneNumbers, templateId, templateParams));
     }
 
     /**
@@ -124,11 +124,21 @@ public class SmsSendTemplate {
      * @return
      */
     public SendResult send(List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams) {
-        try {
-            return smsSender.send(phoneNumbers, templateIds, templateParams);
-        } catch (SmsSendException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        return send(smsSender -> smsSender.send(phoneNumbers, templateIds, templateParams));
+    }
+
+    private void asyncSend(SmsSendFunction smsSendFunction, SendCallback sendCallback) {
+        Assert.notNull(smsSendFunction, "smsSendFunction is null");
+        ExecutorService executor = getAsyncSenderExecutor();
+        SendCallback proxy = createSendCallbackProxy(sendCallback);
+        executor.submit(() -> {
+            try {
+                SendResult result = smsSendFunction.send(smsSender);
+                proxy.onSuccess(result);
+            } catch (Exception e) {
+                proxy.onException(e);
+            }
+        });
     }
 
     /**
@@ -151,18 +161,7 @@ public class SmsSendTemplate {
      * @return
      */
     public void asyncSend(String phoneNumber, String templateId, Map<String, String> templateParams, SendCallback sendCallback) {
-        ExecutorService executor = getAsyncSenderExecutor();
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    SendResult result = smsSender.send(phoneNumber, templateId, templateParams);
-                } catch (Exception e) {
-
-                }
-            }
-        })
-
+        asyncSend(smsSender -> smsSender.send(phoneNumber, templateId, templateParams), sendCallback);
     }
 
     /**
@@ -186,7 +185,7 @@ public class SmsSendTemplate {
      * @return
      */
     public void asyncSend(List<String> phoneNumbers, String templateId, Map<String, String> templateParams, SendCallback sendCallback) {
-        smsSender.send(phoneNumbers, templateId, templateParams);
+        asyncSend(smsSender -> smsSender.send(phoneNumbers, templateId, templateParams), sendCallback);
     }
 
     /**
@@ -212,7 +211,11 @@ public class SmsSendTemplate {
      * @return
      */
     public void asyncSend(List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams, SendCallback sendCallback) {
-        smsSender.send(phoneNumbers, templateIds, templateParams);
+        asyncSend(smsSender -> smsSender.send(phoneNumbers, templateIds, templateParams), sendCallback);
+    }
+
+    private SendCallback createSendCallbackProxy(SendCallback sendCallback) {
+        return new SendCallbackProxy(sendCallback);
     }
 
 }
