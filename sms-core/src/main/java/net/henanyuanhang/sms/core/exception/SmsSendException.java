@@ -16,24 +16,24 @@ public class SmsSendException extends Exception {
     /**
      * 短信发送模板标识
      */
-    private List<String> templateIds;
+    private List<String> templateKeys;
 
     /**
      * 短信发送模板参数
      */
     private List<Map<String, String>> templateParams;
 
-    public SmsSendException(String message, List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams) {
+    public SmsSendException(String message, List<String> phoneNumbers, List<String> templateKeys, List<Map<String, String>> templateParams) {
         super(message);
         this.phoneNumbers = phoneNumbers;
-        this.templateIds = templateIds;
+        this.templateKeys = templateKeys;
         this.templateParams = templateParams;
     }
 
-    public SmsSendException(String message, Throwable cause, List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams) {
+    public SmsSendException(String message, Throwable cause, List<String> phoneNumbers, List<String> templateKeys, List<Map<String, String>> templateParams) {
         super(message, cause);
         this.phoneNumbers = phoneNumbers;
-        this.templateIds = templateIds;
+        this.templateKeys = templateKeys;
         this.templateParams = templateParams;
     }
 }

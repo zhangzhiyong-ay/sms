@@ -12,5 +12,13 @@
     <artifactId>sms-http-extension</artifactId>
     <packaging>pom</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
 
 </project>
