@@ -3,10 +3,8 @@ package net.henanyuanhang.sms.ctip.sender;
 import net.henanyuanhang.sms.core.exception.SmsSendException;
 import net.henanyuanhang.sms.core.sender.SmsSender;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
-import net.henanyuanhang.sms.core.util.Assert;
 import net.henanyuanhang.sms.ctip.CtipProperties;
-import net.henanyuanhang.sms.httpextension.factory.HttpClient5Factory;
-import org.apache.hc.client5.http.CircularRedirectException;
+import net.henanyuanhang.sms.httpextension.httpclient5.HttpClient5Factory;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 
 import java.util.List;

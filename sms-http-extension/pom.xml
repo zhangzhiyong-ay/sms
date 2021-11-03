@@ -18,6 +18,10 @@
             <artifactId>httpclient5</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>net.henanyuanhang</groupId>
+            <artifactId>sms-common</artifactId>
+        </dependency>
     </dependencies>
 
 

@@ -1,4 +1,4 @@
-package net.henanyuanhang.sms.core.util;
+package net.henanyuanhang.sms.common.utils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -22,6 +22,11 @@ public class StringUtils {
 
     public static boolean isEmpty(CharSequence value) {
         return value == null || value.length() == 0;
+    }
+
+
+    public static boolean isNotEmpty(String reasonPhrase) {
+        return !isEmpty(reasonPhrase);
     }
 
     public static int length(String value) {
@@ -106,4 +111,5 @@ public class StringUtils {
         }
         return template;
     }
+
 }

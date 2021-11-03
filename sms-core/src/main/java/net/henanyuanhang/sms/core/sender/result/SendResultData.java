@@ -3,32 +3,52 @@ package net.henanyuanhang.sms.core.sender.result;
 /**
  * 短信发送状态
  */
-public interface SendResultData {
+public class SendResultData {
 
-    /**
-     * 结果唯一表示
-     *
-     * @return
-     */
-    String getId();
+    private String id;
 
-    /**
-     * 结果编码
-     *
-     * @return
-     */
-    String getCode();
+    private String code;
 
-    /**
-     * 结果文本描述
-     *
-     * @return
-     */
-    String getMessage();
+    private String message;
 
-    /**
-     * 是否发送成功
-     * @return
-     */
-    boolean success();
+    private boolean success;
+
+    public SendResultData(String id, String code, String message, boolean success) {
+        this.id = id;
+        this.code = code;
+        this.message = message;
+        this.success = success;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 }

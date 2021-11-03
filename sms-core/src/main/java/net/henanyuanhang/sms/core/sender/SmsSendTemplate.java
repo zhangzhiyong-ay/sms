@@ -2,7 +2,7 @@ package net.henanyuanhang.sms.core.sender;
 
 import net.henanyuanhang.sms.core.exception.SmsSendException;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
-import net.henanyuanhang.sms.core.util.Assert;
+import net.henanyuanhang.sms.common.utils.Assert;
 
 import java.util.List;
 import java.util.Map;

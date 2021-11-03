@@ -1,4 +1,4 @@
-package net.henanyuanhang.sms.core.util;
+package net.henanyuanhang.sms.common.utils;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package net.henanyuanhang.sms.core.util;
+package net.henanyuanhang.sms.common.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
