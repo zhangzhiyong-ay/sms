@@ -2,6 +2,7 @@ package net.henanyuanhang.sms.common.message;
 
 import com.google.common.collect.ImmutableMap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommonCodeMessage implements CodeMessage {
@@ -23,6 +24,14 @@ public class CommonCodeMessage implements CodeMessage {
         builder.put("COMMON_CLIENT_RESPONSE_PARSE_ERROR", "客户端请求结果解析异常");
 
         codeMessageMap = builder.build();
+    }
+
+    public void putCodeMessage(Map<String, String> codeMessageMap) {
+        Map<String, String> tmpMap = new HashMap<>(this.codeMessageMap.size() + codeMessageMap.size());
+        tmpMap.putAll(this.codeMessageMap);
+        tmpMap.putAll(codeMessageMap);
+
+        this.codeMessageMap = ImmutableMap.copyOf(tmpMap);
     }
 
     public String getMessage(String code) {

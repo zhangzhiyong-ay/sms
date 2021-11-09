@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 短信发送者
  */
-public interface SmsExecutor {
+public interface  SmsExecutor {
 
     /**
      * 单个发送短信

@@ -1,11 +1,13 @@
 package net.henanyuanhang.sms.common.utils;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
  * 断言工具
  */
 public class Assert {
+
 
     public static void isNull(Object object, String message) {
         if (object != null) {
@@ -27,6 +29,12 @@ public class Assert {
 
     public static void notEmpty(Map map, String message) {
         if (map == null || map.isEmpty()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void notEmpty(Collection collection, String message) {
+        if (CollectionUtils.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }

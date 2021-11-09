@@ -26,7 +26,7 @@ public class SmsExecuteTemplate {
                 Runtime.getRuntime().availableProcessors(),
                 1000 * 60,
                 TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(50000),
+                new LinkedBlockingQueue<>(50000),
                 new ThreadFactory() {
                     private AtomicInteger threadIndex = new AtomicInteger(0);
 
@@ -40,6 +40,12 @@ public class SmsExecuteTemplate {
     public SmsExecuteTemplate(SmsExecutor smsSender, ExecutorService asyncSenderExecutor) {
         this.smsSender = smsSender;
         this.asyncSenderExecutor = asyncSenderExecutor;
+    }
+
+    public void shutdown() {
+        if (asyncSenderExecutor != null) {
+            asyncSenderExecutor.shutdown();
+        }
     }
 
     public ExecutorService getAsyncSenderExecutor() {
