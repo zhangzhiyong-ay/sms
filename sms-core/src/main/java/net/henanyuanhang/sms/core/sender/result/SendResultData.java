@@ -1,5 +1,7 @@
 package net.henanyuanhang.sms.core.sender.result;
 
+import java.util.Map;
+
 /**
  * 短信发送状态
  */
@@ -9,46 +11,80 @@ public class SendResultData {
 
     private String code;
 
+    private String phoneNumber;
+
+    private String templateKey;
+
+    private Map<String, String> templateParam;
+
     private String message;
 
     private boolean success;
 
-    public SendResultData(String id, String code, String message, boolean success) {
-        this.id = id;
-        this.code = code;
-        this.message = message;
-        this.success = success;
+    public static SendResultData create() {
+        return new SendResultData();
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public SendResultData setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public SendResultData setCode(String code) {
         this.code = code;
+        return this;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public SendResultData setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    public String getTemplateKey() {
+        return templateKey;
+    }
+
+    public SendResultData setTemplateKey(String templateKey) {
+        this.templateKey = templateKey;
+        return this;
+    }
+
+    public Map<String, String> getTemplateParam() {
+        return templateParam;
+    }
+
+    public SendResultData setTemplateParam(Map<String, String> templateParam) {
+        this.templateParam = templateParam;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public SendResultData setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(boolean success) {
+    public SendResultData setSuccess(boolean success) {
         this.success = success;
+        return this;
     }
 }

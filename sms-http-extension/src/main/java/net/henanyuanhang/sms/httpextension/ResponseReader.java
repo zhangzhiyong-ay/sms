@@ -27,6 +27,10 @@ public class ResponseReader<T extends HttpResponse> {
         this.reasonPhrase = reasonPhrase;
     }
 
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
     public boolean isSuccess() {
         return this.success;
     }

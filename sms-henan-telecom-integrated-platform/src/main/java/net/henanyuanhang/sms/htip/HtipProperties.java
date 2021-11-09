@@ -1,8 +1,8 @@
-package net.henanyuanhang.sms.ctip;
+package net.henanyuanhang.sms.htip;
 
 import java.util.Map;
 
-public class CtipProperties {
+public class HtipProperties {
 
     /**
      * 发送短信请求接口地址

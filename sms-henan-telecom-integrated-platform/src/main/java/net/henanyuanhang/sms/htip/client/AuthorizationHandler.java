@@ -1,7 +1,7 @@
-package net.henanyuanhang.sms.ctip.client;
+package net.henanyuanhang.sms.htip.client;
 
 import net.henanyuanhang.sms.common.utils.StringUtils;
-import net.henanyuanhang.sms.ctip.util.MD5Utils;
+import net.henanyuanhang.sms.htip.util.MD5Utils;
 
 import java.nio.charset.StandardCharsets;
 
@@ -27,7 +27,7 @@ class AuthorizationHandler {
      */
     public String createRequestAuthorization() {
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
-        String signature = MD5Utils.md5Hex(timestamp + this.appSecret1, StandardCharsets.UTF_8);
+        String signature = MD5Utils.md5Hex(timestamp + this.appSecret1, StandardCharsets.UTF_8).substring(16);
         return StringUtils.format(authorizationFormat, this.appId, timestamp, signature);
     }
 }

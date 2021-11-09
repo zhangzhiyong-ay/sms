@@ -1,18 +1,18 @@
-package net.henanyuanhang.sms.ctip.exception;
+package net.henanyuanhang.sms.htip.exception;
 
-public class CtipClientException extends Exception {
+public class HtipClientException extends Exception {
 
     private String code;
 
     private String message;
 
-    public CtipClientException(String code, String message, Throwable cause) {
+    public HtipClientException(String code, String message, Throwable cause) {
         super(message, cause);
         this.code = code;
         this.message = message;
     }
 
-    public CtipClientException(String code, String message) {
+    public HtipClientException(String code, String message) {
         super(message);
         this.code = code;
         this.message = message;

@@ -1,6 +1,6 @@
-package net.henanyuanhang.sms.ctip.client;
+package net.henanyuanhang.sms.htip.client;
 
-public class CtipSmsSendResponse extends CtipResponse {
+public class SmsSendResponse extends Response {
     private String messageId;
 
     public String getMessageId() {

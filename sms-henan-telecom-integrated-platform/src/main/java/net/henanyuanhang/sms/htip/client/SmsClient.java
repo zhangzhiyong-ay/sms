@@ -1,12 +1,11 @@
-package net.henanyuanhang.sms.ctip.client;
+package net.henanyuanhang.sms.htip.client;
 
-import net.henanyuanhang.sms.common.ErrorCodeMessage;
+import net.henanyuanhang.sms.common.message.CodeMessage;
 import net.henanyuanhang.sms.common.utils.JSONUtils;
-import net.henanyuanhang.sms.common.utils.StringUtils;
-import net.henanyuanhang.sms.core.sender.result.SendResultData;
-import net.henanyuanhang.sms.ctip.CtipProperties;
-import net.henanyuanhang.sms.ctip.exception.CtipClientException;
-import net.henanyuanhang.sms.ctip.exception.CtipServerException;
+import net.henanyuanhang.sms.htip.HtipProperties;
+import net.henanyuanhang.sms.htip.exception.HtipClientException;
+import net.henanyuanhang.sms.htip.exception.HtipServerException;
+import net.henanyuanhang.sms.htip.message.HtipCodeMessageHolder;
 import net.henanyuanhang.sms.httpextension.ErrorResponse;
 import net.henanyuanhang.sms.httpextension.ResponseReader;
 import net.henanyuanhang.sms.httpextension.httpclient5.HttpClient5Factory;
@@ -16,8 +15,9 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.ParseException;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,6 +27,8 @@ import java.util.Map;
  * 短信客户端
  */
 public class SmsClient {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(SmsClient.class);
 
     /**
      * 发送短信请求接口地址
@@ -56,98 +58,85 @@ public class SmsClient {
     private final String extendedCode;
 
     /**
-     * 短信模板，key值为自定义值，value为平台上添加的短信模板ID
-     * 必填项
-     */
-    private final Map<String, String> template;
-
-    /**
      * http客户端
      */
-    private final CloseableHttpClient closeableHttpClient;
+    private CloseableHttpClient closeableHttpClient;
 
     private final AuthorizationHandler authorizationHandler;
 
-    private ErrorCodeMessage errorCodeMessage;
+    private CodeMessage codeMessage;
 
-    private String contentEncoding;
+    private final String contentEncoding;
 
+    public SmsClient(HtipProperties htipProperties) {
+        this(htipProperties, HttpClient5Factory.createHttpClient(), HtipCodeMessageHolder.getInstance());
+    }
 
-    public SmsClient(CtipProperties ctipProperties) {
+    public SmsClient(
+            HtipProperties htipProperties,
+            CloseableHttpClient closeableHttpClient,
+            CodeMessage codeMessage) {
         this.contentEncoding = "UTF-8";
-        this.errorCodeMessage = ErrorCodeMessage.getInstance();
-        this.sendUrl = ctipProperties.getSendUrl();
-        this.appId = ctipProperties.getAppId();
-        this.appSecret1 = ctipProperties.getAppSecret1();
-        this.extendedCode = ctipProperties.getExtendedCode();
-        this.template = ctipProperties.getTemplate();
-        this.closeableHttpClient = HttpClient5Factory.createHttpClient();
+        this.codeMessage = codeMessage;
+        this.sendUrl = htipProperties.getSendUrl();
+        this.appId = htipProperties.getAppId();
+        this.appSecret1 = htipProperties.getAppSecret1();
+        this.extendedCode = htipProperties.getExtendedCode();
+        this.closeableHttpClient = closeableHttpClient;
         this.authorizationHandler = new AuthorizationHandler(appId, appSecret1);
     }
 
-    public String getSendUrl() {
-        return sendUrl;
+    public void setCloseableHttpClient(CloseableHttpClient closeableHttpClient) {
+        this.closeableHttpClient = closeableHttpClient;
     }
 
-    public String getAppId() {
-        return appId;
+    public void setCodeMessage(CodeMessage codeMessage) {
+        this.codeMessage = codeMessage;
     }
 
-    public String getAppSecret1() {
-        return appSecret1;
-    }
-
-    public String getExtendedCode() {
-        return extendedCode;
-    }
-
-    public Map<String, String> getTemplate() {
-        return template;
-    }
-
-    public CloseableHttpClient getCloseableHttpClient() {
-        return closeableHttpClient;
-    }
-
-    public CtipSmsSendResponse sendSms(String phoneNumber, String templateKey, Map<String, String> templateParameter) throws CtipClientException {
-
-        String templateId = template.get(templateKey);
-        if (StringUtils.isEmpty(templateId)) {
-            throw new CtipClientException("COMMON_TEMPLATE_ID_ILLEGAL", errorCodeMessage.getMessage("COMMON_TEMPLATE_ID_ILLEGAL"));
-        }
-
-        SendResultData sendResultData = null;
+    /**
+     * 发送短信
+     *
+     * @param phoneNumber       接收短信的手机号
+     * @param templateId        短信模板ID。在平台上添加短信模板生成的模板ID
+     * @param templateParameter 短信模板参数
+     * @return
+     * @throws HtipClientException 当短信发送失败时抛出异常
+     */
+    public SmsSendResponse sendSms(String phoneNumber, String templateId, Map<String, String> templateParameter) throws HtipClientException {
 
         String authorization = authorizationHandler.createRequestAuthorization();
         String body = createBody(phoneNumber, templateId, templateParameter);
 
         HttpPost post = new HttpPost(this.sendUrl);
-
         StringEntity stringEntity = new StringEntity(body, ContentType.APPLICATION_JSON, this.contentEncoding, false);
         post.setEntity(stringEntity);
         post.setHeader("Authorization", authorization);
 
         try {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("authorization为 {}，请求body为： {}", authorization, body);
+            }
             CloseableHttpResponse httpResponse = closeableHttpClient.execute(post);
-            ResponseReader<CtipSmsSendResponse> reader = HttpClient5ResponseReaderFactory.createReader(CtipSmsSendResponse.class, httpResponse);
+
+            ResponseReader<SmsSendResponse> reader = HttpClient5ResponseReaderFactory.createReader(SmsSendResponse.class, httpResponse);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("请求结果为： {}", reader.getReasonPhrase());
+            }
             if (reader.isSuccess()) {
-                CtipSmsSendResponse smsSendResponse = reader.readSuccessResponse();
+                SmsSendResponse smsSendResponse = reader.readSuccessResponse();
+                smsSendResponse.setDescription(codeMessage.getMessage(smsSendResponse.getCode(), "短信发送成功"));
                 return smsSendResponse;
             } else {
                 ErrorResponse errorResponse = reader.readErrorResponse();
-                throw new CtipServerException(errorResponse);
+                throw new HtipServerException(errorResponse.getErrorCode(), codeMessage.getMessage(errorResponse.getErrorCode(), "短信发送服务异常"), errorResponse.getHttpStatus());
             }
 
         } catch (IOException e) {
-            throw new CtipClientException("COMMON_SERVICE_ERROR", errorCodeMessage.getMessage("COMMON_SERVICE_ERROR"), e);
+            throw new HtipClientException("COMMON_SERVICE_ERROR", codeMessage.getMessage("COMMON_SERVICE_ERROR"), e);
         } catch (ParseException e) {
-            throw new CtipClientException("COMMON_CLIENT_RESPONSE_PARSE_ERROR", errorCodeMessage.getMessage("COMMON_CLIENT_RESPONSE_PARSE_ERROR"), e);
+            throw new HtipClientException("COMMON_CLIENT_RESPONSE_PARSE_ERROR", codeMessage.getMessage("COMMON_CLIENT_RESPONSE_PARSE_ERROR"), e);
         }
-    }
-
-    private <T> T getResponse(CloseableHttpResponse response, Class<T> tClass) throws Exception {
-        String json = EntityUtils.toString(response.getEntity());
-        return JSONUtils.toObject(json, tClass);
     }
 
     private String createBody(String mobile, String templateId, Map<String, String> templateParameter) {

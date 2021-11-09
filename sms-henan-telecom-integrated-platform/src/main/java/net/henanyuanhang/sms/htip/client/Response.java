@@ -1,8 +1,8 @@
-package net.henanyuanhang.sms.ctip.client;
+package net.henanyuanhang.sms.htip.client;
 
 import net.henanyuanhang.sms.httpextension.HttpResponse;
 
-public class CtipResponse implements HttpResponse {
+public class Response implements HttpResponse {
     private String code;
     private String description;
 
@@ -20,10 +20,6 @@ public class CtipResponse implements HttpResponse {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean success() {
-        return "200".equals(code);
     }
 
     @Override

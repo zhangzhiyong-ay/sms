@@ -1,4 +1,4 @@
-package net.henanyuanhang.sms.ctip.util;
+package net.henanyuanhang.sms.htip.util;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
