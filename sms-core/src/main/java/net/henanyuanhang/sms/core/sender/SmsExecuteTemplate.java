@@ -20,6 +20,7 @@ public class SmsExecuteTemplate {
     private final ExecutorService asyncSenderExecutor;
 
     public SmsExecuteTemplate(SmsExecutor smsSender) {
+
         this.smsSender = smsSender;
         this.asyncSenderExecutor = new ThreadPoolExecutor(
                 Runtime.getRuntime().availableProcessors(),
@@ -73,11 +74,11 @@ public class SmsExecuteTemplate {
      *
      * @param phoneNumber    发送短信的手机号，不可为空
      * @param templateKey    短信模板关键字，不可为空
-     * @param templateParams 短信模板变量对应的参数。若模板无变量，则设置为null
+     * @param templateParam 短信模板变量对应的参数。若模板无变量，则设置为null
      * @return
      */
-    public SendResult send(String phoneNumber, String templateKey, Map<String, String> templateParams) {
-        return send(smsSender -> smsSender.send(phoneNumber, templateKey, templateParams));
+    public SendResult send(String phoneNumber, String templateKey, Map<String, String> templateParam) {
+        return send(smsSender -> smsSender.send(phoneNumber, templateKey, templateParam));
     }
 
     /**
@@ -97,11 +98,11 @@ public class SmsExecuteTemplate {
      *
      * @param phoneNumbers   批量发送的手机号，不可为空，且长度最小为1
      * @param templateKey    短信模板关键字，不可为空
-     * @param templateParams 短信模板变量对应的参数。若模板无变量，则设置为null
+     * @param templateParam 短信模板变量对应的参数。若模板无变量，则设置为null
      * @return
      */
-    public SendResult send(List<String> phoneNumbers, String templateKey, Map<String, String> templateParams) {
-        return send(smsSender -> smsSender.send(phoneNumbers, templateKey, templateParams));
+    public SendResult send(List<String> phoneNumbers, String templateKey, Map<String, String> templateParam) {
+        return send(smsSender -> smsSender.send(phoneNumbers, templateKey, templateParam));
     }
 
     /**
@@ -156,11 +157,11 @@ public class SmsExecuteTemplate {
      *
      * @param phoneNumber    发送短信的手机号，不可为空
      * @param templateKey    短信模板关键字，不可为空
-     * @param templateParams 短信模板变量对应的参数。若模板无变量，则设置为null
+     * @param templateParam 短信模板变量对应的参数。若模板无变量，则设置为null
      * @return
      */
-    public void asyncSend(String phoneNumber, String templateKey, Map<String, String> templateParams, SendResultCallback sendCallback) {
-        asyncSend(smsSender -> smsSender.send(phoneNumber, templateKey, templateParams), sendCallback);
+    public void asyncSend(String phoneNumber, String templateKey, Map<String, String> templateParam, SendResultCallback sendCallback) {
+        asyncSend(smsSender -> smsSender.send(phoneNumber, templateKey, templateParam), sendCallback);
     }
 
     /**
@@ -180,11 +181,11 @@ public class SmsExecuteTemplate {
      *
      * @param phoneNumbers   批量发送的手机号，不可为空，且长度最小为1
      * @param templateKey    短信模板关键字，不可为空
-     * @param templateParams 短信模板变量对应的参数。若模板无变量，则设置为null
+     * @param templateParam 短信模板变量对应的参数。若模板无变量，则设置为null
      * @return
      */
-    public void asyncSend(List<String> phoneNumbers, String templateKey, Map<String, String> templateParams, SendResultCallback sendCallback) {
-        asyncSend(smsSender -> smsSender.send(phoneNumbers, templateKey, templateParams), sendCallback);
+    public void asyncSend(List<String> phoneNumbers, String templateKey, Map<String, String> templateParam, SendResultCallback sendCallback) {
+        asyncSend(smsSender -> smsSender.send(phoneNumbers, templateKey, templateParam), sendCallback);
     }
 
     /**

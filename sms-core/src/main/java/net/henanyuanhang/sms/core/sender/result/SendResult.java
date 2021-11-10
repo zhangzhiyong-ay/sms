@@ -18,8 +18,8 @@ public class SendResult {
     private List<SendResultData> failData;
 
     public SendResult(List<SendResultData> successData, List<SendResultData> failData) {
-        this.successData = successData;
-        this.failData = failData;
+        this.successData = CollectionUtils.isEmpty(successData) ? new ArrayList<>() : successData;
+        this.failData = CollectionUtils.isEmpty(failData) ? new ArrayList<>() : failData;
     }
 
     public void resultCallback(SendResultCallback callback) {
@@ -47,28 +47,23 @@ public class SendResult {
         this.failData = failData;
     }
 
-    public static SendResultBuilder builder() {
-        return new SendResultBuilder();
+    public SendResult addSendResultData(SendResultData sendResultData) {
+        if (sendResultData.isSuccess()) {
+            successData.add(sendResultData);
+        } else {
+            failData.add(sendResultData);
+        }
+        return this;
     }
 
-    public static class SendResultBuilder {
-        private List<SendResultData> successData = new ArrayList<>();
-        private List<SendResultData> failData = new ArrayList<>();
+    public SendResult addSendResult(SendResult sendResult) {
+        successData.addAll(sendResult.getSuccessData());
+        failData.addAll(sendResult.getFailData());
+        return this;
+    }
 
-        public SendResultBuilder addSendData(SendResultData sendResultData) {
-            if (null != sendResultData) {
-                if (sendResultData.isSuccess()) {
-                    successData.add(sendResultData);
-                } else {
-                    failData.add(sendResultData);
-                }
-            }
-            return this;
-        }
-
-        public SendResult build() {
-            return new SendResult(successData, failData);
-        }
+    public static SendResult create() {
+        return new SendResult(null, null);
     }
 
 }

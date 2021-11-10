@@ -59,10 +59,10 @@ public class HtipSmsExecutor implements SmsExecutor {
      * @param phoneNumber    手机号
      * @param templateKey    短信模板key
      * @param templateId     短信模板ID。如果为null时，则尝试根据tempkateKey获取
-     * @param templateParams 模板参数
+     * @param templateParam 模板参数
      * @return
      */
-    private SendResultData doSend(String phoneNumber, String templateKey, String templateId, Map<String, String> templateParams) {
+    private SendResultData doSend(String phoneNumber, String templateKey, String templateId, Map<String, String> templateParam) {
         if (StringUtils.isEmpty(templateId)) {
             templateId = this.templates.get(templateKey);
             if (LOGGER.isDebugEnabled()) {
@@ -76,7 +76,7 @@ public class HtipSmsExecutor implements SmsExecutor {
             }
             SendResultData fail = SendResultData.create()
                     .setTemplateKey(templateKey)
-                    .setTemplateParam(templateParams)
+                    .setTemplateParam(templateParam)
                     .setPhoneNumber(phoneNumber)
                     .setCode("E000005")
                     .setSuccess(false)
@@ -84,7 +84,7 @@ public class HtipSmsExecutor implements SmsExecutor {
             return fail;
         } else {
             try {
-                SmsSendResponse smsSendResponse = smsClient.sendSms(phoneNumber, templateId, templateParams);
+                SmsSendResponse smsSendResponse = smsClient.sendSms(phoneNumber, templateId, templateParam);
                 SendResultData success = SendResultData.create()
                         .setSuccess(true)
                         .setId(smsSendResponse.getMessageId())
@@ -92,7 +92,7 @@ public class HtipSmsExecutor implements SmsExecutor {
                         .setMessage(smsSendResponse.getDescription())
                         .setPhoneNumber(phoneNumber)
                         .setTemplateKey(templateKey)
-                        .setTemplateParam(templateParams);
+                        .setTemplateParam(templateParam);
                 return success;
             } catch (HtipClientException e) {
                 if (LOGGER.isDebugEnabled()) {
@@ -100,7 +100,7 @@ public class HtipSmsExecutor implements SmsExecutor {
                 }
                 SendResultData fail = SendResultData.create()
                         .setTemplateKey(templateKey)
-                        .setTemplateParam(templateParams)
+                        .setTemplateParam(templateParam)
                         .setPhoneNumber(phoneNumber)
                         .setCode(e.getCode())
                         .setSuccess(false)
@@ -111,8 +111,8 @@ public class HtipSmsExecutor implements SmsExecutor {
     }
 
     @Override
-    public SendResult send(String phoneNumber, String templateKey, Map<String, String> templateParams) {
-        SendResultData sendResultData = this.doSend(phoneNumber, templateKey, null, templateParams);
+    public SendResult send(String phoneNumber, String templateKey, Map<String, String> templateParam) {
+        SendResultData sendResultData = this.doSend(phoneNumber, templateKey, null, templateParam);
         SendResult sendResult = SendResult.builder().addSendData(sendResultData).build();
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("短信发送结果：{}", JSONUtils.toString(sendResult));
@@ -121,13 +121,13 @@ public class HtipSmsExecutor implements SmsExecutor {
     }
 
     @Override
-    public SendResult send(List<String> phoneNumbers, String templateKey, Map<String, String> templateParams) {
+    public SendResult send(List<String> phoneNumbers, String templateKey, Map<String, String> templateParam) {
         SendResult.SendResultBuilder builder = SendResult.builder();
 
         String templateId = this.templates.get(templateKey);
 
         for (String phoneNumber : phoneNumbers) {
-            SendResultData sendResultData = this.doSend(phoneNumber, templateKey, templateId, templateParams);
+            SendResultData sendResultData = this.doSend(phoneNumber, templateKey, templateId, templateParam);
             builder.addSendData(sendResultData);
         }
         SendResult sendResult = builder.build();
