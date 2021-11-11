@@ -1,7 +1,5 @@
 package net.henanyuanhang.sms.htip;
 
-import java.util.Map;
-
 public class HtipProperties {
 
     /**
@@ -31,19 +29,6 @@ public class HtipProperties {
      */
     private String extendedCode;
 
-    /**
-     * 短信模板，key值为自定义值，value为平台上添加的短信模板ID
-     * 必填项
-     */
-    private Map<String, String> template;
-
-    public Map<String, String> getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(Map<String, String> template) {
-        this.template = template;
-    }
 
     public String getSendUrl() {
         return sendUrl;

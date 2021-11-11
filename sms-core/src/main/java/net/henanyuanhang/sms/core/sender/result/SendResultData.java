@@ -13,7 +13,7 @@ public class SendResultData {
 
     private String phoneNumber;
 
-    private String templateKey;
+    private String templateId;
 
     private Map<String, String> templateParam;
 
@@ -52,12 +52,12 @@ public class SendResultData {
         return this;
     }
 
-    public String getTemplateKey() {
-        return templateKey;
+    public String gettemplateId() {
+        return templateId;
     }
 
-    public SendResultData setTemplateKey(String templateKey) {
-        this.templateKey = templateKey;
+    public SendResultData settemplateId(String templateId) {
+        this.templateId = templateId;
         return this;
     }
 

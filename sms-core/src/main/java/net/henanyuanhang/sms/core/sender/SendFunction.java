@@ -2,7 +2,7 @@ package net.henanyuanhang.sms.core.sender;
 
 import net.henanyuanhang.sms.core.sender.result.SendResult;
 
-public interface SmsSendFunction {
+public interface SendFunction {
 
-    SendResult send(SmsExecutor smsSender);
+    SendResult send(Executor smsSender);
 }

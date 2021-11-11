@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 短信发送异常
  */
-public class SmsSendException extends Exception {
+public class SendException extends Exception {
 
     /**
      * 接受短信手机号
@@ -16,24 +16,24 @@ public class SmsSendException extends Exception {
     /**
      * 短信发送模板标识
      */
-    private List<String> templateKeys;
+    private List<String> templateIds;
 
     /**
      * 短信发送模板参数
      */
     private List<Map<String, String>> templateParams;
 
-    public SmsSendException(String message, List<String> phoneNumbers, List<String> templateKeys, List<Map<String, String>> templateParams) {
+    public SendException(String message, List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams) {
         super(message);
         this.phoneNumbers = phoneNumbers;
-        this.templateKeys = templateKeys;
+        this.templateIds = templateIds;
         this.templateParams = templateParams;
     }
 
-    public SmsSendException(String message, Throwable cause, List<String> phoneNumbers, List<String> templateKeys, List<Map<String, String>> templateParams) {
+    public SendException(String message, Throwable cause, List<String> phoneNumbers, List<String> templateIds, List<Map<String, String>> templateParams) {
         super(message, cause);
         this.phoneNumbers = phoneNumbers;
-        this.templateKeys = templateKeys;
+        this.templateIds = templateIds;
         this.templateParams = templateParams;
     }
 }
