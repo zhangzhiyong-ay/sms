@@ -4,8 +4,8 @@ import net.henanyuanhang.sms.common.message.CodeMessage;
 import net.henanyuanhang.sms.common.message.CommonCodeMessage;
 import net.henanyuanhang.sms.common.utils.Assert;
 import net.henanyuanhang.sms.common.utils.CollectionUtils;
-import net.henanyuanhang.sms.core.interceptor.SendInterceptor;
-import net.henanyuanhang.sms.core.interceptor.SendInterceptorManager;
+import net.henanyuanhang.sms.core.interceptor.ParamInterceptor;
+import net.henanyuanhang.sms.core.interceptor.ParamInterceptorManager;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
 import net.henanyuanhang.sms.core.sender.result.SendResultData;
 
@@ -14,13 +14,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ExecutorProxy implements Executor {
+public class SmsExecutorProxy implements SmsExecutor {
 
-    private Executor smsExecutor;
+    private SmsExecutor smsExecutor;
     private CodeMessage codeMessage;
-    private final List<SendInterceptor> smsSendInterceptors;
+    private final List<ParamInterceptor> smsSendInterceptors;
 
-    public ExecutorProxy(Executor smsExecutor, SendInterceptorManager sendInterceptorManager) {
+    public SmsExecutorProxy(SmsExecutor smsExecutor, ParamInterceptorManager sendInterceptorManager) {
         this.smsExecutor = smsExecutor;
         this.codeMessage = CommonCodeMessage.getInstance();
         this.smsSendInterceptors = sendInterceptorManager.getInterceptors();
@@ -46,7 +46,7 @@ public class ExecutorProxy implements Executor {
      */
     private SendResultData doInterceptor(String phoneNumber, String templateId, Map<String, String> templateParam) {
         SendResultData sendResultData = null;
-        for (SendInterceptor smsSendInterceptor : smsSendInterceptors) {
+        for (ParamInterceptor smsSendInterceptor : smsSendInterceptors) {
             sendResultData = smsSendInterceptor.intercept(phoneNumber, templateId, templateParam);
             if (sendResultData != null) {
                 break;
@@ -57,8 +57,10 @@ public class ExecutorProxy implements Executor {
 
     @Override
     public SendResult send(String phoneNumber, String templateId, Map<String, String> templateParam) {
+        Assert.notEmpty(phoneNumber, "phoneNumber is emtpy");
+        Assert.notEmpty(templateId, "templateId is emtpy");
         SendResultData sendResultData = doInterceptor(phoneNumber, templateId, templateParam);
-        if (sendResultData == null) {
+        if (sendResultData != null) {
             return SendResult.create().addSendResultData(sendResultData);
         }
         return this.smsExecutor.send(phoneNumber, templateId, templateParam);
@@ -67,8 +69,9 @@ public class ExecutorProxy implements Executor {
     @Override
     public SendResult send(List<String> phoneNumbers, String templateId, Map<String, String> templateParam) {
         Assert.notEmpty(phoneNumbers, "phoneNumbers is emtpy");
+        Assert.notEmpty(templateId, "templateId is emtpy");
         SendResult sendResult = SendResult.create();
-        List<String> waitSendPhoneNumbers = new ArrayList<>(phoneNumbers);
+        List<String> waitSendPhoneNumbers = new ArrayList<>(phoneNumbers.size());
         for (String phoneNumber : phoneNumbers) {
             SendResultData sendResultData = doInterceptor(phoneNumber, templateId, templateParam);
             if (sendResultData == null) {

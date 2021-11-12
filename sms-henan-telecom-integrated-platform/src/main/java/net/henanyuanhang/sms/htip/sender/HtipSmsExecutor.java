@@ -2,7 +2,7 @@ package net.henanyuanhang.sms.htip.sender;
 
 import net.henanyuanhang.sms.common.message.CodeMessage;
 import net.henanyuanhang.sms.common.utils.JSONUtils;
-import net.henanyuanhang.sms.core.sender.Executor;
+import net.henanyuanhang.sms.core.sender.SmsExecutor;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
 import net.henanyuanhang.sms.core.sender.result.SendResultData;
 import net.henanyuanhang.sms.htip.HtipProperties;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * 中国电信综合短信业务管理平台短信
  */
-public class HtipSmsExecutor implements Executor {
+public class HtipSmsExecutor implements SmsExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HtipSmsExecutor.class);
 

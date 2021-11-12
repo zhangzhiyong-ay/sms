@@ -87,4 +87,17 @@ public class SendResultData {
         this.success = success;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "SendResultData{" +
+                "id='" + id + '\'' +
+                ", code='" + code + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", templateId='" + templateId + '\'' +
+                ", templateParam=" + templateParam +
+                ", message='" + message + '\'' +
+                ", success=" + success +
+                '}';
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
  * @author zhangzhiyong
  * @createTime 2021年11月11日
  */
-public interface SendInterceptor {
+public interface ParamInterceptor {
 
     /**
      * 拦截器，可以通过实现类来对短信发送时的参数进行拦截

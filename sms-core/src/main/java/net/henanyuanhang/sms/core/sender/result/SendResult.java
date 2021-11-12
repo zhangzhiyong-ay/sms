@@ -66,4 +66,11 @@ public class SendResult {
         return new SendResult(null, null);
     }
 
+    @Override
+    public String toString() {
+        return "SendResult{" +
+                "successData=" + successData +
+                ", failData=" + failData +
+                '}';
+    }
 }

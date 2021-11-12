@@ -1,6 +1,5 @@
 package net.henanyuanhang.sms.core.interceptor;
 
-import com.sun.corba.se.spi.orbutil.proxy.LinkedInvocationHandler;
 import net.henanyuanhang.sms.common.utils.CollectionUtils;
 
 import java.util.*;
@@ -11,17 +10,17 @@ import java.util.*;
  * @author zhangzhiyong
  * @createTime 2021年11月11日 21:33
  */
-public class SendInterceptorManager {
+public class ParamInterceptorManager {
 
-    private LinkedList<SendInterceptor> interceptors = new LinkedList<>();
+    private LinkedList<ParamInterceptor> interceptors = new LinkedList<>();
 
     private Set<Class> classSet = new HashSet<>();
 
-    public SendInterceptorManager() {
+    public ParamInterceptorManager() {
         addDefaultSendInterceptor();
     }
 
-    public List<SendInterceptor> getInterceptors() {
+    public List<ParamInterceptor> getInterceptors() {
         return new ArrayList<>(interceptors);
     }
 
@@ -37,7 +36,7 @@ public class SendInterceptorManager {
             return 0;
         }
         int index = 0;
-        for (SendInterceptor sendInterceptor : interceptors) {
+        for (ParamInterceptor sendInterceptor : interceptors) {
             if (sendInterceptor.getClass().equals(tClass)) {
                 return index;
             } else {
@@ -54,7 +53,7 @@ public class SendInterceptorManager {
      * @param tClass          指定拦截器类
      * @return
      */
-    public SendInterceptorManager addBefore(SendInterceptor sendInterceptor, Class<SendInterceptor> tClass) {
+    public ParamInterceptorManager addBefore(ParamInterceptor sendInterceptor, Class<ParamInterceptor> tClass) {
         checkClass(sendInterceptor.getClass());
         int index = interceptors.indexOf(tClass);
         if (index == -1) {
@@ -71,7 +70,7 @@ public class SendInterceptorManager {
      * @param tClass          指定拦截器类
      * @return
      */
-    public SendInterceptorManager addAfter(SendInterceptor sendInterceptor, Class<SendInterceptor> tClass) {
+    public ParamInterceptorManager addAfter(ParamInterceptor sendInterceptor, Class<ParamInterceptor> tClass) {
         checkClass(sendInterceptor.getClass());
         int index = interceptors.indexOf(tClass);
         if (index == -1) {
@@ -88,7 +87,7 @@ public class SendInterceptorManager {
      * @param tClass          指定拦截器类
      * @return
      */
-    public SendInterceptorManager addAt(SendInterceptor sendInterceptor, Class<SendInterceptor> tClass) {
+    public ParamInterceptorManager addAt(ParamInterceptor sendInterceptor, Class<ParamInterceptor> tClass) {
         checkClass(sendInterceptor.getClass());
         int index = interceptors.indexOf(tClass);
         if (index == -1) {
@@ -106,7 +105,7 @@ public class SendInterceptorManager {
      * @param tClass
      * @return
      */
-    public SendInterceptorManager remove(Class<SendInterceptor> tClass) {
+    public ParamInterceptorManager remove(Class<ParamInterceptor> tClass) {
         if (CollectionUtils.notEmpty(interceptors) && classSet.remove(tClass)) {
             int index = indexOf(tClass);
             interceptors.remove(index);
@@ -120,7 +119,7 @@ public class SendInterceptorManager {
      * @param sendInterceptor
      * @return
      */
-    public SendInterceptorManager addFirst(SendInterceptor sendInterceptor) {
+    public ParamInterceptorManager addFirst(ParamInterceptor sendInterceptor) {
         checkClass(sendInterceptor.getClass());
         addInterceptor(0, sendInterceptor);
         return this;
@@ -132,13 +131,13 @@ public class SendInterceptorManager {
      * @param sendInterceptor
      * @return
      */
-    public SendInterceptorManager addLast(SendInterceptor sendInterceptor) {
+    public ParamInterceptorManager addLast(ParamInterceptor sendInterceptor) {
         checkClass(sendInterceptor.getClass());
         addInterceptor(interceptors.size(), sendInterceptor);
         return this;
     }
 
-    private void addInterceptor(int index, SendInterceptor sendInterceptor) {
+    private void addInterceptor(int index, ParamInterceptor sendInterceptor) {
         if (index == 0) {
             interceptors.addFirst(sendInterceptor);
         } else {

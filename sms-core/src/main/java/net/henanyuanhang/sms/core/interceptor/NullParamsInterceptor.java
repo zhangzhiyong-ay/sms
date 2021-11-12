@@ -13,7 +13,7 @@ import java.util.Map;
  * @author zhangzhiyong
  * @createTime 2021年11月11日 21:14
  */
-public class NullParamsInterceptor implements SendInterceptor {
+public class NullParamsInterceptor implements ParamInterceptor {
 
     private CodeMessage codeMessage;
 
