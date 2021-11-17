@@ -41,17 +41,17 @@ public class SimpleExample {
 
     public static void main(String[] args) {
         // appId、appSecret1、extendedCode可在平台我的信息中查看
-        String appId = "90c16a27c73b4bcb8acaac8c4ec626b6";
-        String appSecret1 = "98874814e4a34444bea01c4ae997c3ef";
-        String extendedCode = "22711"; // 扩展码
+        String appId = "";
+        String appSecret1 = "";
+        String extendedCode = ""; // 扩展码
 
         // sendUrl可在平台模板短信接口规范中查看
-        String sendUrl = "https://1.193.76.62:6043/shortmsg/v1/sendmsg";
+        String sendUrl = "";
 
         // 接收短信的手机号
-        String phoneNumber = "18613720784";
+        String phoneNumber = "";
         // 短信模板ID，在平台上新增模板后，会自动生成ID
-        String templateId = "1587";
+        String templateId = "";
         // 短信模板参数，根据配置的短信模板中的参数进行配置
         Map<String, String> templateParam = new HashMap<>();
 
