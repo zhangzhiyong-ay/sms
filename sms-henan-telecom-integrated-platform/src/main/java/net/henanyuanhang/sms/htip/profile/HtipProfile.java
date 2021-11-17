@@ -1,6 +1,6 @@
-package net.henanyuanhang.sms.htip;
+package net.henanyuanhang.sms.htip.profile;
 
-public class HtipProperties {
+public class HtipProfile {
 
     /**
      * 发送短信请求接口地址

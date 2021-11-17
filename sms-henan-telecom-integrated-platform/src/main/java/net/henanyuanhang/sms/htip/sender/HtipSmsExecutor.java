@@ -5,7 +5,7 @@ import net.henanyuanhang.sms.common.utils.JSONUtils;
 import net.henanyuanhang.sms.core.sender.SmsExecutor;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
 import net.henanyuanhang.sms.core.sender.result.SendResultData;
-import net.henanyuanhang.sms.htip.HtipProperties;
+import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import net.henanyuanhang.sms.htip.client.SmsClient;
 import net.henanyuanhang.sms.htip.client.SmsSendResponse;
 import net.henanyuanhang.sms.htip.exception.HtipClientException;
@@ -28,9 +28,13 @@ public class HtipSmsExecutor implements SmsExecutor {
 
     private CodeMessage codeMessage;
 
-    public HtipSmsExecutor(HtipProperties htipProperties) {
-        this.smsClient = new SmsClient(htipProperties);
-        this.codeMessage = HtipCodeMessageHolder.getInstance();
+    public HtipSmsExecutor(HtipProfile htipProfile) {
+        this(htipProfile, HtipCodeMessageHolder.getInstance());
+    }
+
+    public HtipSmsExecutor(HtipProfile htipProfile, CodeMessage codeMessage) {
+        this.smsClient = new SmsClient(htipProfile);
+        this.codeMessage = codeMessage;
     }
 
     public CodeMessage getCodeMessage() {

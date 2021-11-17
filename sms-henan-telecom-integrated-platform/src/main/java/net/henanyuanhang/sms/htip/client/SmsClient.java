@@ -2,7 +2,7 @@ package net.henanyuanhang.sms.htip.client;
 
 import net.henanyuanhang.sms.common.message.CodeMessage;
 import net.henanyuanhang.sms.common.utils.JSONUtils;
-import net.henanyuanhang.sms.htip.HtipProperties;
+import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import net.henanyuanhang.sms.htip.exception.HtipClientException;
 import net.henanyuanhang.sms.htip.exception.HtipServerException;
 import net.henanyuanhang.sms.htip.message.HtipCodeMessageHolder;
@@ -68,20 +68,20 @@ public class SmsClient {
 
     private final String contentEncoding;
 
-    public SmsClient(HtipProperties htipProperties) {
-        this(htipProperties, HttpClient5Factory.createHttpClient(), HtipCodeMessageHolder.getInstance());
+    public SmsClient(HtipProfile htipProfile) {
+        this(htipProfile, HttpClient5Factory.createHttpClient(), HtipCodeMessageHolder.getInstance());
     }
 
     public SmsClient(
-            HtipProperties htipProperties,
+            HtipProfile htipProfile,
             CloseableHttpClient closeableHttpClient,
             CodeMessage codeMessage) {
         this.contentEncoding = "UTF-8";
         this.codeMessage = codeMessage;
-        this.sendUrl = htipProperties.getSendUrl();
-        this.appId = htipProperties.getAppId();
-        this.appSecret1 = htipProperties.getAppSecret1();
-        this.extendedCode = htipProperties.getExtendedCode();
+        this.sendUrl = htipProfile.getSendUrl();
+        this.appId = htipProfile.getAppId();
+        this.appSecret1 = htipProfile.getAppSecret1();
+        this.extendedCode = htipProfile.getExtendedCode();
         this.closeableHttpClient = closeableHttpClient;
         this.authorizationHandler = new AuthorizationHandler(appId, appSecret1);
     }
