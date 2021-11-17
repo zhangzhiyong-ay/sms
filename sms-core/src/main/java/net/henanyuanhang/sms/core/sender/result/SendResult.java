@@ -11,10 +11,13 @@ import java.util.List;
 public class SendResult {
 
     /**
-     * 发送结果状态集合，每个手机号的发送结果对应一个状态
+     * 发送成功结果集合，每个手机号的发送结果对应一个状态
      */
     private List<SendResultData> successData;
 
+    /**
+     * 发送失败结果集合，每个手机号的发送结果对应一个状态
+     */
     private List<SendResultData> failData;
 
     public SendResult(List<SendResultData> successData, List<SendResultData> failData) {
