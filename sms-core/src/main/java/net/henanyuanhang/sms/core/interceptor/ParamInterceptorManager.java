@@ -53,9 +53,9 @@ public class ParamInterceptorManager {
      * @param tClass          指定拦截器类
      * @return
      */
-    public ParamInterceptorManager addBefore(ParamInterceptor sendInterceptor, Class<ParamInterceptor> tClass) {
-        checkClass(sendInterceptor.getClass());
-        int index = interceptors.indexOf(tClass);
+    public ParamInterceptorManager addBefore(ParamInterceptor sendInterceptor, Class<? extends ParamInterceptor> tClass) {
+        checkExistClass(sendInterceptor.getClass());
+        int index = indexOf(tClass);
         if (index == -1) {
             throw new IllegalArgumentException("未找到该拦截器 " + tClass.getName());
         }
@@ -70,9 +70,9 @@ public class ParamInterceptorManager {
      * @param tClass          指定拦截器类
      * @return
      */
-    public ParamInterceptorManager addAfter(ParamInterceptor sendInterceptor, Class<ParamInterceptor> tClass) {
-        checkClass(sendInterceptor.getClass());
-        int index = interceptors.indexOf(tClass);
+    public ParamInterceptorManager addAfter(ParamInterceptor sendInterceptor, Class<? extends ParamInterceptor> tClass) {
+        checkExistClass(sendInterceptor.getClass());
+        int index = indexOf(tClass);
         if (index == -1) {
             throw new IllegalArgumentException("未找到该拦截器 " + tClass.getName());
         }
@@ -87,14 +87,15 @@ public class ParamInterceptorManager {
      * @param tClass          指定拦截器类
      * @return
      */
-    public ParamInterceptorManager addAt(ParamInterceptor sendInterceptor, Class<ParamInterceptor> tClass) {
-        checkClass(sendInterceptor.getClass());
-        int index = interceptors.indexOf(tClass);
+    public ParamInterceptorManager addAt(ParamInterceptor sendInterceptor, Class<? extends ParamInterceptor> tClass) {
+        Class<? extends ParamInterceptor> setClass = sendInterceptor.getClass();
+        checkExistClass(setClass);
+        int index = indexOf(tClass);
         if (index == -1) {
             throw new IllegalArgumentException("未找到该拦截器 " + tClass.getName());
         }
         interceptors.set(index, sendInterceptor);
-        classSet.add(tClass);
+        classSet.add(setClass);
         classSet.remove(tClass);
         return this;
     }
@@ -105,7 +106,7 @@ public class ParamInterceptorManager {
      * @param tClass
      * @return
      */
-    public ParamInterceptorManager remove(Class<ParamInterceptor> tClass) {
+    public ParamInterceptorManager remove(Class<? extends ParamInterceptor> tClass) {
         if (CollectionUtils.notEmpty(interceptors) && classSet.remove(tClass)) {
             int index = indexOf(tClass);
             interceptors.remove(index);
@@ -120,7 +121,7 @@ public class ParamInterceptorManager {
      * @return
      */
     public ParamInterceptorManager addFirst(ParamInterceptor sendInterceptor) {
-        checkClass(sendInterceptor.getClass());
+        checkExistClass(sendInterceptor.getClass());
         addInterceptor(0, sendInterceptor);
         return this;
     }
@@ -132,7 +133,7 @@ public class ParamInterceptorManager {
      * @return
      */
     public ParamInterceptorManager addLast(ParamInterceptor sendInterceptor) {
-        checkClass(sendInterceptor.getClass());
+        checkExistClass(sendInterceptor.getClass());
         addInterceptor(interceptors.size(), sendInterceptor);
         return this;
     }
@@ -146,9 +147,14 @@ public class ParamInterceptorManager {
         classSet.add(sendInterceptor.getClass());
     }
 
-    private void checkClass(Class c) {
+    /**
+     * 检查拦截器是否已存在，当存在时，则抛出异常
+     *
+     * @param c
+     */
+    private void checkExistClass(Class c) {
         if (classSet.contains(c)) {
-            throw new IllegalArgumentException("该拦截器 " + c.getName() + " 已存在");
+            throw new IllegalArgumentException("拦截器 " + c.getName() + " 已存在");
         }
     }
 

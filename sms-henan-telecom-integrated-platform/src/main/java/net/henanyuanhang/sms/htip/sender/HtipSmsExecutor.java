@@ -5,11 +5,11 @@ import net.henanyuanhang.sms.common.utils.JSONUtils;
 import net.henanyuanhang.sms.core.sender.SmsExecutor;
 import net.henanyuanhang.sms.core.sender.result.SendResult;
 import net.henanyuanhang.sms.core.sender.result.SendResultData;
-import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import net.henanyuanhang.sms.htip.client.SmsClient;
 import net.henanyuanhang.sms.htip.client.SmsSendResponse;
 import net.henanyuanhang.sms.htip.exception.HtipClientException;
-import net.henanyuanhang.sms.htip.message.HtipCodeMessageHolder;
+import net.henanyuanhang.sms.htip.message.HtipCodeMessageFactory;
+import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,11 +29,11 @@ public class HtipSmsExecutor implements SmsExecutor {
     private CodeMessage codeMessage;
 
     public HtipSmsExecutor(HtipProfile htipProfile) {
-        this(htipProfile, HtipCodeMessageHolder.getInstance());
+        this(htipProfile, new HtipCodeMessageFactory().create());
     }
 
     public HtipSmsExecutor(HtipProfile htipProfile, CodeMessage codeMessage) {
-        this.smsClient = new SmsClient(htipProfile);
+        this.smsClient = new SmsClient(htipProfile, codeMessage);
         this.codeMessage = codeMessage;
     }
 

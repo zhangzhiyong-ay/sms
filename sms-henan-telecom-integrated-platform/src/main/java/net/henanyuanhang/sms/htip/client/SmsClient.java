@@ -2,10 +2,9 @@ package net.henanyuanhang.sms.htip.client;
 
 import net.henanyuanhang.sms.common.message.CodeMessage;
 import net.henanyuanhang.sms.common.utils.JSONUtils;
-import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import net.henanyuanhang.sms.htip.exception.HtipClientException;
 import net.henanyuanhang.sms.htip.exception.HtipServerException;
-import net.henanyuanhang.sms.htip.message.HtipCodeMessageHolder;
+import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import net.henanyuanhang.sms.httpextension.ErrorResponse;
 import net.henanyuanhang.sms.httpextension.ResponseReader;
 import net.henanyuanhang.sms.httpextension.httpclient5.HttpClient5Factory;
@@ -68,8 +67,8 @@ public class SmsClient {
 
     private final String contentEncoding;
 
-    public SmsClient(HtipProfile htipProfile) {
-        this(htipProfile, HttpClient5Factory.createHttpClient(), HtipCodeMessageHolder.getInstance());
+    public SmsClient(HtipProfile htipProfile, CodeMessage codeMessage) {
+        this(htipProfile, HttpClient5Factory.createHttpClient(), codeMessage);
     }
 
     public SmsClient(

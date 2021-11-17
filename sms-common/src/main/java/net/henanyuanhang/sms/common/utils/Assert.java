@@ -28,7 +28,7 @@ public class Assert {
     }
 
     public static void notEmpty(Map map, String message) {
-        if (map == null || map.isEmpty()) {
+        if (MapUtils.isEmpty(map)) {
             throw new IllegalArgumentException(message);
         }
     }

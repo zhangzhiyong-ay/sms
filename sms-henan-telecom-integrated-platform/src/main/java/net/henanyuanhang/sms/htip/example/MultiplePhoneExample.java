@@ -8,30 +8,33 @@ import net.henanyuanhang.sms.core.sender.result.SendResultData;
 import net.henanyuanhang.sms.htip.profile.HtipProfile;
 import net.henanyuanhang.sms.htip.sender.HtipSmsExecutor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
- * 简单应用示例
+ * 多手机号发送示例
+ *
+ * @author zhangzhiyong
+ * @createTime 2021年11月17日 21:21
  */
-public class SimpleExample {
+public class MultiplePhoneExample {
 
     // appId、appSecret1、extendedCode可在平台我的信息中查看
     String appId = "";
     String appSecret1 = "";
     String extendedCode = ""; // 扩展码
+
+    String phoneNumber1 = "";
+    String phoneNumber2 = "";
+
+    String templateId = "";
+
     // sendUrl可在平台模板短信接口规范中查看
     String sendUrl = "";
 
-    String phoneNumber = "";
-    String templateId = "";
-
     public static void main(String[] args) {
-        SimpleExample example = new SimpleExample();
-        example.sync();
-        example.async();
+        MultiplePhoneExample multiplePhoneExample = new MultiplePhoneExample();
+        multiplePhoneExample.sync();
+        multiplePhoneExample.async();
     }
 
     /**
@@ -39,8 +42,11 @@ public class SimpleExample {
      */
     public void async() {
 
+
         // 接收短信的手机号
-        String phoneNumber = this.phoneNumber;
+        List<String> phoneNumbers = new ArrayList<>(2);
+        phoneNumbers.add(phoneNumber1);
+        phoneNumbers.add(phoneNumber2);
         // 短信模板ID，在平台上新增模板后，会自动生成ID
         String templateId = this.templateId;
         // 短信模板参数，根据配置的短信模板中的参数进行配置
@@ -68,8 +74,8 @@ public class SimpleExample {
                 .smsExecutor(htipSmsExecutor)
                 .build();
 
-        // 发送单个短信
-        smsExecuteTemplate.asyncSend(phoneNumber, templateId, templateParam, new SendResultCallback() {
+        // 发送短信
+        smsExecuteTemplate.asyncSend(phoneNumbers, templateId, templateParam, new SendResultCallback() {
             @Override
             public void onSuccess(List<SendResultData> successData) {
                 for (SendResultData successDatum : successData) {
@@ -84,7 +90,7 @@ public class SimpleExample {
                 }
             }
         });
-        System.out.println("等待异步发送结果...");
+        System.out.println("等待异步发送结果..");
         smsExecuteTemplate.shutdown();
     }
 
@@ -94,7 +100,9 @@ public class SimpleExample {
     public void sync() {
 
         // 接收短信的手机号
-        String phoneNumber = this.phoneNumber;
+        List<String> phoneNumbers = new ArrayList<>(2);
+        phoneNumbers.add(phoneNumber1);
+        phoneNumbers.add(phoneNumber2);
         // 短信模板ID，在平台上新增模板后，会自动生成ID
         String templateId = this.templateId;
         // 短信模板参数，根据配置的短信模板中的参数进行配置
@@ -122,8 +130,8 @@ public class SimpleExample {
                 .smsExecutor(htipSmsExecutor)
                 .build();
 
-        // 发送单个短信
-        SendResult sendResult = smsExecuteTemplate.send(phoneNumber, templateId, templateParam);
+        // 发送短信
+        SendResult sendResult = smsExecuteTemplate.send(phoneNumbers, templateId, templateParam);
 
 
         // 使用回调函数的方式处理短信发送结果
@@ -154,7 +162,6 @@ public class SimpleExample {
 //        for (SendResultData failDatum : failData) {
 //            System.out.println("短信发送结果：" + failData);
 //        }
-
         smsExecuteTemplate.shutdown();
 
     }
