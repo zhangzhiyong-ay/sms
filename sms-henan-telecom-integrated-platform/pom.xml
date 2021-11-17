@@ -6,6 +6,7 @@
         <artifactId>sms</artifactId>
         <groupId>net.henanyuanhang</groupId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>中国电信综合短信业务管理平台</description>
