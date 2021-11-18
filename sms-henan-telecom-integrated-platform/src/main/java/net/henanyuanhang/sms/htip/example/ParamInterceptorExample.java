@@ -5,6 +5,7 @@ import net.henanyuanhang.sms.core.interceptor.ParamInterceptor;
 import net.henanyuanhang.sms.core.interceptor.ParamInterceptorManager;
 import net.henanyuanhang.sms.core.sender.SmsExecuteTemplate;
 import net.henanyuanhang.sms.core.sender.SmsExecuteTemplateBuilder;
+import net.henanyuanhang.sms.core.sender.SmsExecutor;
 import net.henanyuanhang.sms.core.sender.result.SendResultCallback;
 import net.henanyuanhang.sms.core.sender.result.SendResultData;
 import net.henanyuanhang.sms.htip.example.interceptor.PhoneNumberRegexInterceptor;
@@ -74,7 +75,7 @@ public class ParamInterceptorExample {
         htipProfile.setExtendedCode(extendedCode);
 
         // 创建短信发送执行器
-        HtipSmsExecutor htipSmsExecutor = new HtipSmsExecutor(htipProfile);
+        SmsExecutor smsExecutor = new HtipSmsExecutor(htipProfile);
 
         // 创建拦截器管理器，将拦截器添加到拦截器链末尾
         ParamInterceptorManager paramInterceptorManager = new ParamInterceptorManager();
@@ -82,7 +83,7 @@ public class ParamInterceptorExample {
 
         // 创建短信发送模板。通常在项目中创建一个全局对象即可使用
         SmsExecuteTemplate smsExecuteTemplate = SmsExecuteTemplateBuilder.create()
-                .smsExecutor(htipSmsExecutor)
+                .smsExecutor(smsExecutor)
                 .paramInterceptorManager(paramInterceptorManager)
                 .build();
 
