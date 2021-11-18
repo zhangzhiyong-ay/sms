@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * 简单应用示例
+ * 发送单个短信
  */
 public class SimpleExample {
 
