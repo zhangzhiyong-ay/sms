@@ -16,7 +16,7 @@
 ## 接入文档
 
 
-具体使用文档和示例参考[使用手册]()
+具体使用文档和示例参考[使用手册](https://github.com/zhangzhiyong-ay/sms/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
 
 ## 未来开发规划
 
