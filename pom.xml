@@ -13,6 +13,7 @@
         <module>sms-http-extension</module>
         <module>sms-henan-telecom-integrated-platform</module>
         <module>sms-common</module>
+        <module>sms-spring-boot-starter</module>
     </modules>
 
     <properties>
@@ -30,6 +31,10 @@
     </properties>
 
     <dependencies>
+
+
+
+
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -63,16 +68,16 @@
 
     <dependencyManagement>
         <dependencies>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-configuration-processor</artifactId>-->
-<!--                <version>${spring.boot.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter</artifactId>-->
-<!--                <version>${spring.boot.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
             <dependency>
